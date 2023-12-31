@@ -141,5 +141,35 @@ function getBooks() {
 
 function getBook(id) {
   return data.find((d) => d.id === id);
-
 }
+const book = getBook(1);
+book;
+
+// const title=book.title;
+// title;
+// const author=book.author;
+// author;
+
+//object destructuring
+const { title, author, pages, publicationDate, genres, hasMovieAdaptation } =
+  book;
+console.log(title, author, genres);
+
+// const primaryGenre=genres[0];
+// const SecondaryGenre = genres[1];
+// console.log(primaryGenre,SecondaryGenre);
+
+//destructing
+// const [primaryGenre,SecondaryGenre]=genres;
+// console.log(primaryGenre,SecondaryGenre);
+
+// ... Rest Operator
+const [primaryGenre, SecondaryGenre, ...otherGenres] = genres;
+console.log(primaryGenre, SecondaryGenre, ...otherGenres);
+
+//... Spread Operator
+const newGenres=[...genres,"epic fantasy"];
+newGenres;
+
+const updateBook={...book,moviePublicationDate:"2001-12-19"};
+updateBook;
