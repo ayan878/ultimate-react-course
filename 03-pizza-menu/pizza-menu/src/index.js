@@ -49,31 +49,39 @@ const pizzaData = [
 
 const App = () => (
   <div>
-    <h1>Hello React!</h1>
     <Header />
-    <Menu /> 
-    
+    <Menu pizzas={pizzaData} />
     <Footer />
   </div>
 );
-const Header=()=><h1>Fast React Pizza Co.</h1>
-const Menu = () => (
+
+const Header = () => <h1>Fast React Pizza Co.</h1>;
+
+const Menu = ({ pizzas }) => (
   <div>
     <h2>Our menu</h2>
-    <pizza />
-    <Pizza />
-    <Pizza />
-    <Pizza />
+    {pizzas.map((pizza, index) => (
+      <Pizza key={index} pizza={pizza} />
+    ))}
   </div>
 );
-const Footer=()=><footer>{new Date().toLocaleTimeString()}.We're currently open</footer>;
 
-const Pizza = () => (
+const Footer = () => (
+  <footer>{new Date().toLocaleTimeString()}. We're currently open</footer>
+);
+
+const Pizza = ({ pizza }) => (
   <div>
-    <img src='pizzas/spinaci.jpg' alt='Pizza Spinaci'></img>
-    <h2>Pizza Spinaci</h2>
-    <p>Tomato, mozarella, spinach, and ricotta cheese</p>
+    <img src={pizza.photoName} alt={pizza.name}></img>
+    <h2>{pizza.name}</h2>
+    <p>{pizza.ingredients}</p>
+    <p>{pizza.price}</p>
   </div>
 );
-const root=ReactDOM.createRoot(document.getElementById("root"));
-root.render(<React.StrictMode><App/></React.StrictMode>);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
