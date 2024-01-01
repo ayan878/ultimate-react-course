@@ -51,8 +51,17 @@ const App = () => (
   <div>
     <h1>Hello React!</h1>
     <Pizza />
+    <Pizza />
+    <Pizza />
   </div>
 );
-const Pizza=()=><h2>Pizza</h2>;
+
+const Pizza = () => (
+  <div>
+    <img src='pizzas/spinaci.jpg' alt='Pizza Spinaci'></img>
+    <h2>Pizza Spinaci</h2>
+    <p>Tomato, mozarella, spinach, and ricotta cheese</p>
+  </div>
+);
 const root=ReactDOM.createRoot(document.getElementById("root"));
 root.render(<React.StrictMode><App/></React.StrictMode>);
