@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM  from 'react-dom/client';
 import "./index.css"
+
 const pizzaData = [
   {
     name: "Focaccia",
@@ -57,7 +58,6 @@ const App = () => (
 
 const Header = () => (
   <header class="header">
-    {" "}
     <h1>Fast React Pizza Co.</h1>
   </header>
 );
