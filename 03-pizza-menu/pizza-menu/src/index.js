@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM  from 'react-dom/client';
-
+import "./index.css"
 const pizzaData = [
   {
     name: "Focaccia",
@@ -48,21 +48,42 @@ const pizzaData = [
 
 
 const App = () => (
-  <div>
-    <Header />
-    <Menu pizzas={pizzaData} />
-    <Footer />
+  <div class="container">
+    <Header/>
+    <Menu pizzas={pizzaData} numPizzas={pizzaData.length}/>
+    <Footer/>
   </div>
 );
 
-const Header = () => <h1>Fast React Pizza Co.</h1>;
+const Header = () => (
+  <header class="header">
+    {" "}
+    <h1>Fast React Pizza Co.</h1>
+  </header>
+);
 
-const Menu = ({ pizzas }) => (
-  <div>
-    <h2>Our menu</h2>
-    {pizzas.map((pizza, index) => (
+const Menu = ({ pizzas, numPizzas }) => (
+  <div class="menu">
+    <h2 class="menu">Our menu</h2>
+    {numPizzas > 0 ? (
+      <>
+        <p>
+          Authentic Italian cuisine. 6 creative dishes to choose from. All from
+          our stone oven, all organic, all delicious.
+        </p>
+
+        <ul className="pizzas">
+          {pizzas.map((pizza) => (
+            <Pizza pizza={pizza} key={pizza.name} />
+          ))}
+        </ul>
+      </>
+    ) : (
+      <p>We're still working on our menu. Please come back later :)</p>
+    )}
+    {/* {pizzas.map((pizza, index) => (
       <Pizza key={index} pizza={pizza} />
-    ))}
+    ))} */}
   </div>
 );
 
@@ -71,11 +92,11 @@ const Footer = () => (
 );
 
 const Pizza = ({ pizza }) => (
-  <div>
+  <div class="pizza">
     <img src={pizza.photoName} alt={pizza.name}></img>
-    <h2>{pizza.name}</h2>
+    <h3>{pizza.name}</h3>
     <p>{pizza.ingredients}</p>
-    <p>{pizza.price}</p>
+    <span>{pizza.price +3}</span>
   </div>
 );
 
