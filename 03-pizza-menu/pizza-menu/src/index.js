@@ -66,6 +66,7 @@ const Menu = ({ pizzas, numPizzas }) => (
   <div class="menu">
     <h2 class="menu">Our menu</h2>
     {numPizzas > 0 ? (
+      // React Fragment
       <>
         <p>
           Authentic Italian cuisine. 6 creative dishes to choose from. All from
