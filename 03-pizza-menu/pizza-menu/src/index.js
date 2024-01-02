@@ -119,13 +119,26 @@ function Order({ closeHour, openHour }) {
 
 const Pizza = ({ pizza }) => {
   //conditional rendering with multiple returns
-  if(!pizza.soldOut)return null;
-  return<div class="pizza">
-    <img src={pizza.photoName} alt={pizza.name}></img>
-    <h3>{pizza.name}</h3>
-    <p>{pizza.ingredients}</p>
-    <span>{pizza.price +3}</span>
-  </div>
+  // if(pizza.soldOut)return null;
+  // if (pizzaObj.soldOut) return null;
+
+  return (
+    <li className={`pizza ${pizza.soldOut ? "sold-out" : ""}`}>
+      <img src={pizza.photoName} alt={pizza.name} />
+      <div>
+        <h3>{pizza.name}</h3>
+        <p>{pizza.ingredients}</p>
+
+        {/* {pizzaObj.soldOut ? (
+          <span>SOLD OUT</span>
+        ) : (
+          <span>{pizzaObj.price}</span>
+        )} */}
+
+        <span>{pizza.soldOut ? "SOLD OUT" : pizza.price}</span>
+      </div>
+    </li>
+  );
 }
 
 
