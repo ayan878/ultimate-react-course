@@ -91,14 +91,17 @@ const Footer = () => (
   <footer>{new Date().toLocaleTimeString()}. We're currently open</footer>
 );
 
-const Pizza = ({ pizza }) => (
-  <div class="pizza">
+const Pizza = ({ pizza }) => {
+  //conditional rendering with multiple returns
+  if(!pizza.soldOut)return null;
+  return<div class="pizza">
     <img src={pizza.photoName} alt={pizza.name}></img>
     <h3>{pizza.name}</h3>
     <p>{pizza.ingredients}</p>
     <span>{pizza.price +3}</span>
   </div>
-);
+}
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
