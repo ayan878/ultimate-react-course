@@ -1,7 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 
 const skills = [
   {
@@ -36,24 +35,55 @@ const skills = [
   },
 ];
 
-const App=()=>(<div className='card'>
-  <Avatar/>
-  <div className='data'>
-    <Intro/>
-    <SkillList/>
+const App = () => (
+  <div className="card">
+    <Avatar />
+    <div className="data">
+      <Intro />
+      <SkillList />
+    </div>
   </div>
-</div>);
+);
 
-const Avatar=()=>
+const Avatar = () => <img className="avatar" src="ayan.jpg" alt="Ayan Raza" />;
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const Intro = () => (
+  <div>
+    <h1>Ayan Raza</h1>
+    <p>
+      Full-stack web developer and teacher at Udemy. When not coding or
+      preparing a course, I like to play board games, to cook (and eat), or to
+      just enjoy the Portuguese sun at the beach.
+    </p>
+  </div>
+);
+
+const SkillList = () =>{ 
+  debugger;
+  return(
+  <div className="skill-list">
+    {skills.map((skill) => (
+      <Skill skill={skill.skill} color={skill.color} level={skill.level} />
+    ))}
+  </div>
+);};
+
+const Skill = (props) => (
+  <div className="skill" style={{ backgroundColor: props.color }}>
+    <span>{props.skill}</span>
+    <span>
+      {props.level === "beginner"
+        ? "👶"
+        : props.level === "intermediate"
+        ? "💪"
+        : "👑"}
+    </span>
+  </div>
+);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
