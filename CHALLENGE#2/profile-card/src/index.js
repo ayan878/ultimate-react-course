@@ -59,7 +59,6 @@ const Intro = () => (
 );
 
 const SkillList = () =>{ 
-  debugger;
   return(
   <div className="skill-list">
     {skills.map((skill) => (
