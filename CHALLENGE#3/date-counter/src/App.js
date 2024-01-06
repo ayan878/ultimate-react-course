@@ -1,24 +1,23 @@
 import React, { useState } from "react";
 
 export default function App() {
+  const [step, setStep] = useState(1);
   return (
     <div className="App">
-      <StepCounter/>
-      <Counter />
+      <StepCounter step={step} setStep={setStep} />
+      <Counter step={step} />
     </div>
   );
 }
 
-const StepCounter = () => {
-  const [step, setStep] = useState(1);
-
+const StepCounter = ({ step, setStep }) => {
   const onStepIncrement = () => {
-    setStep((forwardStep) => step + 1);
+    setStep(() => step + 1);
     console.log("clicked");
   };
 
   const onStepDecrement = () => {
-    setStep((prevStep) => step - 1);
+    setStep(() => step - 1);
     console.log("clicked");
   };
 
@@ -33,18 +32,18 @@ const StepCounter = () => {
   );
 };
 
-const Counter = () => {
+const Counter = ({ step }) => {
   const [count, setCount] = useState(0);
 
   const date = new Date("june 31 2027");
   date.setDate(date.getDate() + count);
 
   const handleCountDecrement = () => {
-    setCount((c) => c - 1);
+    setCount((c) => c - step);
     console.log("clicked");
   };
   const handleCountIncrement = () => {
-    setCount((c) => c + 1);
+    setCount((c) => c + step);
     console.log("clicked");
   };
   return (
