@@ -11,7 +11,7 @@ export default function App() {
         onStepDecrement={handleStepDecrement}
       /> */}
       <StepCounter />
-      <CountCounter />
+      <Counter />
     </div>
   );
 }
@@ -41,8 +41,11 @@ const StepCounter = () => {
   );
 };
 
-const CountCounter = () => {
+const Counter = () => {
   const [count, setCount] = useState(0);
+
+  const date = new Date("june 31 2027");
+  date.setDate(date.getDate() + count);
   const handleCountDecrement = () => {
     setCount((c) => c - 1);
     console.log("clicked");
@@ -58,6 +61,7 @@ const CountCounter = () => {
         <span>Count: {count}</span>
         <button onClick={handleCountIncrement}>+</button>
       </div>
+      <p>{date.toDateString()}</p>
     </div>
   );
 };
