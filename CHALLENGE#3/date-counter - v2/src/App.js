@@ -31,9 +31,9 @@ const StepCounter = ({ step, setStep }) => {
           value={step}
           onChange={(e) => setStep(Number(e.target.value))}
         ></input>
-        <button onClick={onStepDecrement}>-</button>
-        <span>Step: {step}</span>
-        <button onClick={onStepIncrement}>+</button>
+        {/* <button onClick={onStepDecrement}>-</button> */}
+        <span>{step}</span>
+        {/* <button onClick={onStepIncrement}>+</button> */}
       </div>
     </div>
   );
@@ -62,7 +62,7 @@ const Counter = ({ step, setStep }) => {
     <div>
       <div>
         <button onClick={handleCountDecrement}>-</button>
-        <span>Count: {count}</span>
+        {/* <span>Count: {count}</span> */}
         <input
           type="text"
           value={count}
