@@ -9,11 +9,12 @@ const initialItems = [
 ];
 
 export default function App() {
-  return ( 
+  const [items, setItems] = useState([]);
+  return (
     <div className="app">
       <Logo />
-      <Form />
-      <PackingList />
+      <Form items={items} setItems={setItems} />
+      <PackingList items={items} />
       <Stats />
     </div>
   );
@@ -21,9 +22,13 @@ export default function App() {
 function Logo() {
   return <h1>🌴Far Away ⛱️</h1>;
 }
-function Form() {
+function Form({ items,setItems }) {
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(5);
+
+  function handleAddItems(item) {
+    setItems((items) => [...items, item]);
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -37,6 +42,7 @@ function Form() {
       id: Date.now(),
     };
     console.log(newItem);
+    handleAddItems(newItem);
     setDescription("");
     setQuantity(1);
   }
@@ -70,18 +76,18 @@ function Form() {
     </form>
   );
 }
-function PackingList() {
+function PackingList({items}) {
   return (
     <div className="list">
       <ul>
-        {initialItems.map((item) => (
+        {items.map((item) => (
           <Item item={item} key={item.id} />
         ))}
       </ul>
     </div>
   );
 }
-function Item({item }) {
+function Item({ item }) {
   return (
     <li>
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
