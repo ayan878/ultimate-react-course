@@ -10,8 +10,8 @@ export default function App() {
 
 function TipCalculator() {
   const [bill, setBill] = useState("");
-  const [Percentage1, SetPercentage1] = useState("");
-  const [Percentage2, setPercentage2] = useState("");
+  const [Percentage1, SetPercentage1] = useState(0); // Use 0 as the initial value
+  const [Percentage2, setPercentage2] = useState(0); // Use 0 as the initial value
   const tip = bill * ((Percentage1 + Percentage2) / 2 / 100);
 
   function handleReset() {
@@ -19,6 +19,7 @@ function TipCalculator() {
     SetPercentage1(0);
     setPercentage2(0);
   }
+
   return (
     <div>
       <BillInput bill={bill} setBill={setBill} />
@@ -28,8 +29,12 @@ function TipCalculator() {
       <SelectPercentage Percentage={Percentage2} onSelect={setPercentage2}>
         How did your friend like service?
       </SelectPercentage>
-      <Output bill={bill} tip={tip} />
-      <Reset handleReset={handleReset} />
+      {bill > 0 && (
+        <>
+          <Output bill={bill} tip={tip} />
+          <Reset handleReset={handleReset} />
+        </>
+      )}
     </div>
   );
 }
