@@ -70,7 +70,7 @@ const Steps = () => {
               textColor="#fff"
               bgColor="#7950f2"
               onClick={handlePreviouse}
-            ><span>👈</span>Previous</Button>
+            >👈Previous</Button>
             <Button
               textColor="#fff"
               bgColor="#7950f2"
