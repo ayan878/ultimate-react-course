@@ -46,9 +46,11 @@ const Steps = () => {
             <div class={step === 2 ? "active" : ""}>2</div>
             <div class={step === 3 ? "active" : ""}>3</div>
           </div>
-          <p class="message">
-            Step {step}: {messages[step - 1]}
-          </p>
+          {/* <p class="message">
+            <h3>Step {step}</h3>
+            {messages[step - 1]}
+          </p> */}
+          <StepMessage step={step}>{messages[step - 1]}</StepMessage>
           <div class="buttons">
             {/* <button
               class="previous"
@@ -70,18 +72,26 @@ const Steps = () => {
               textColor="#fff"
               bgColor="#7950f2"
               onClick={handlePreviouse}
-            >👈Previous</Button>
-            <Button
-              textColor="#fff"
-              bgColor="#7950f2"
-              onClick={handleNext}
-            >Next👉</Button>
+            >
+              👈Previous
+            </Button>
+            <Button textColor="#fff" bgColor="#7950f2" onClick={handleNext}>
+              Next👉
+            </Button>
           </div>
         </div>
       )}
     </div>
   );
 };
+function StepMessage({step,children}){
+      return (
+        <p class="message">
+          <h1>STEP {step}</h1>
+          {children}
+        </p>
+      );
+}
 function Button({textColor,bgColor,onClick,children}){
   return (
     <button
