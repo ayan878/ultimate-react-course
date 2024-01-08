@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Children, useState } from "react";
 const messages = [
   "Learn React ⚛️",
   "Apply for jobs 💼",
@@ -50,10 +50,11 @@ const Steps = () => {
             Step {step}: {messages[step - 1]}
           </p>
           <div class="buttons">
-            <button
+            {/* <button
               class="previous"
               style={{ backgroundColor: "#7950f2", color: "#fff" }}
               onClick={handlePreviouse}
+              emoji="👈"
             >
               Previous
             </button>
@@ -61,12 +62,35 @@ const Steps = () => {
               class="next"
               style={{ backgroundColor: "#7950f2", color: "#fff" }}
               onClick={handleNext}
+              emoji="👉"
             >
               Next
-            </button>
+            </button> */}
+            <Button
+              textColor="#fff"
+              bgColor="#7950f2"
+              onClick={handlePreviouse}
+            ><span>👈</span>Previous</Button>
+            <Button
+              textColor="#fff"
+              bgColor="#7950f2"
+              onClick={handleNext}
+            >Next👉</Button>
           </div>
         </div>
       )}
     </div>
   );
 };
+function Button({textColor,bgColor,onClick,children}){
+  return (
+    <button
+      class="previous"
+      style={{ backgroundColor: bgColor, color: textColor }}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+
+}
