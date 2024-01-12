@@ -23,9 +23,9 @@ export default function StarRating({ maxRating }) {
           <Star
             key={i}
             onRate={() => setRating(i + 1)}
-            full={tempRating ? tempRating >= i+1 : rating >= i + 1}
             onHoverIn={() => setTempRating(i + 1)}
             onHoverOut={() => setTempRating(0)}
+            full={tempRating ? tempRating >= i + 1 : rating >= i + 1}
           />
         ))}
       </div>
