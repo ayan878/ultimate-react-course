@@ -38,6 +38,9 @@ function App() {
       setParagraphValue("📉 Too low!");
       setScore(score - 1);
     }
+    if (score === 1) {
+      setParagraphValue("💥 you lost the game");
+    }
   };
 
   const generateRandomNumber = () => {
