@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-// import "/.index.css";
+import React, { useState, useEffect } from "react";
+import JSConfetti from "js-confetti";
 function App() {
   const [inputValue, setInputValue] = useState(0);
   const [guessedNumber, setGuessedNumber] = useState("?");
@@ -11,8 +11,8 @@ function App() {
   const [highscore, setHighscore] = useState(0);
 
   const handleAgain = () => {
-    setBgColor("initialColor"); // Reset color
-    setGuessedNumber(generateRandomNumber);
+    setBgColor("bgColor"); // Reset color
+    setGuessedNumber(generateRandomNumber());
     setInputValue(0);
     setPageLoaded(false);
     setParagraphValue("Start guessing...");
@@ -24,11 +24,11 @@ function App() {
       setPageLoaded(true);
       setParagraphValue("🎉 Correct number!");
       setBgColor("setBgColor");
+      launchConfetti();
       setHighscore(score);
-      if(score>highscore){
+      if (score > highscore) {
         setHighscore(score);
       }
-
     }
     if (parseInt(inputValue, 10) > guessedNumber) {
       setScore(score - 1);
@@ -47,6 +47,13 @@ function App() {
   useEffect(() => {
     setGuessedNumber(generateRandomNumber());
   }, []);
+  // *****************************************
+  // congratulations part
+  const launchConfetti = () => {
+    const jsConfetti = new JSConfetti();
+    jsConfetti.addConfetti();
+  };
+  // ********************************************
 
   return (
     <div className={bgColor}>
