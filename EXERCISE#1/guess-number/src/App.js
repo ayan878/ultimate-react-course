@@ -8,12 +8,27 @@ function App() {
   const [bgColor, setBgColor] = useState("bgColor");
 
   const [score, setScore] = useState(20);
+  const [highscore, setHighscore] = useState(0);
+
+  const handleAgain = () => {
+    setBgColor("initialColor"); // Reset color
+    setGuessedNumber(generateRandomNumber);
+    setInputValue(0);
+    setPageLoaded(false);
+    setParagraphValue("Start guessing...");
+    setScore(20);
+  };
 
   const onClickCheckButton = () => {
     if (parseInt(inputValue, 10) === guessedNumber) {
       setPageLoaded(true);
       setParagraphValue("🎉 Correct number!");
       setBgColor("setBgColor");
+      setHighscore(score);
+      if(score>highscore){
+        setHighscore(score);
+      }
+
     }
     if (parseInt(inputValue, 10) > guessedNumber) {
       setScore(score - 1);
@@ -38,7 +53,9 @@ function App() {
       <header>
         <h1>Guess My Number!</h1>
         <p className="between">(Between 1 and 20)</p>
-        <button className="btn again">Again!</button>
+        <button className="btn again" onClick={handleAgain}>
+          Again!
+        </button>
         <div className="number" value={guessedNumber}>
           {pageLoaded ? guessedNumber : "?"}
         </div>
@@ -63,7 +80,7 @@ function App() {
             💯 Score: <span className="score">{score}</span>
           </p>
           <p className="label-highscore">
-            🥇 Highscore: <span className="highscore">0</span>
+            🥇 Highscore: <span className="highscore">{highscore}</span>
           </p>
         </section>
       </main>
