@@ -1,124 +1,49 @@
-// Prevent animation on load
-setTimeout(() => {
-  document.body.classList.remove("preload");
-}, 500);
+import React from "react";
 
-// DOM
-const btnRules = document.querySelector(".rules-btn");
-const btnClose = document.querySelector(".close-btn");
-const modalRules = document.querySelector(".modal");
-
-const CHOICES = [
-  {
-    name: "paper",
-    beats: "rock",
-  },
-  {
-    name: "scissors",
-    beats: "paper",
-  },
-  {
-    name: "rock",
-    beats: "scissors",
-  },
-];
-const choiceButtons = document.querySelectorAll(".choice-btn");
-const gameDiv = document.querySelector(".game");
-const resultsDiv = document.querySelector(".results");
-const resultDivs = document.querySelectorAll(".results__result");
-
-const resultWinner = document.querySelector(".results__winner");
-const resultText = document.querySelector(".results__text");
-
-const playAgainBtn = document.querySelector(".play-again");
-
-const scoreNumber = document.querySelector(".score__number");
-let score = 0;
-
-// Game Logic
-choiceButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const choiceName = button.dataset.choice;
-    const choice = CHOICES.find((choice) => choice.name === choiceName);
-    choose(choice);
-  });
-});
-
-function choose(choice) {
-  const aichoice = aiChoose();
-  displayResults([choice, aichoice]);
-  displayWinner([choice, aichoice]);
-}
-
-function aiChoose() {
-  const rand = Math.floor(Math.random() * CHOICES.length);
-  return CHOICES[rand];
-}
-
-function displayResults(results) {
-  resultDivs.forEach((resultDiv, idx) => {
-    setTimeout(() => {
-      resultDiv.innerHTML = `
-        <div class="choice ${results[idx].name}">
-          <img src="images/icon-${results[idx].name}.svg" alt="${results[idx].name}" />
+function App() {
+  return (
+    <div className="container">
+      <header className="header">
+        <img src="./images/logo.svg" alt="logo" className="logo" />
+        <div className="score">
+          <div className="score__title">score</div>
+          <div className="score__number">0</div>
         </div>
-      `;
-    }, idx * 1000);
-  });
+      </header>
+      <section className="results hidden">
+        <h2 className="results__heading">you picked</h2>
+        <h2 className="results__heading">the house picked</h2>
+        <div className="results__result"></div>
+        <div className="results__winner hidden">
+          <h3 className="results__text">{}</h3>
+          <button className="play-again">play again</button>
+        </div>
+        <div className="results__result"></div>
+      </section>
 
-  gameDiv.classList.toggle("hidden");
-  resultsDiv.classList.toggle("hidden");
+      <button className="rules-btn" tabindex="1">
+        rules
+      </button>
+      <div className="modal">
+        <div className="modal__container">
+          <header className="modal__header">
+            <h2 className="modal__heading">rules</h2>
+            <button className="close-btn">
+              <img src="./images/icon-close.svg" alt="Close Button" />
+            </button>
+          </header>
+          <img
+            src="./images/image-rules.svg"
+            alt="RulesImage" className="rules-img"
+          />
+        </div>
+      </div>
+
+      <footer className="footer">
+        <div className="attribution"></div>
+      </footer>
+    </div>
+  );
 }
 
-function displayWinner(results) {
-  setTimeout(() => {
-    const userWins = isWinner(results);
-    const aiWins = isWinner(results.reverse());
-
-    if (userWins) {
-      resultText.innerText = "you win";
-      resultDivs[0].classList.toggle("winner");
-      keepScore(1);
-    } else if (aiWins) {
-      resultText.innerText = "you lose";
-      resultDivs[1].classList.toggle("winner");
-      keepScore(-1);
-    } else {
-      resultText.innerText = "draw";
-    }
-    resultWinner.classList.toggle("hidden");
-    resultsDiv.classList.toggle("show-winner");
-  }, 1000);
-}
-
-function isWinner(results) {
-  return results[0].beats === results[1].name;
-}
-
-function keepScore(point) {
-  score += point;
-  scoreNumber.innerText = score;
-}
-
-// Play Again
-playAgainBtn.addEventListener("click", () => {
-  gameDiv.classList.toggle("hidden");
-  resultsDiv.classList.toggle("hidden");
-
-  resultDivs.forEach((resultDiv) => {
-    resultDiv.innerHTML = "";
-    resultDiv.classList.remove("winner");
-  });
-
-  resultText.innerText = "";
-  resultWinner.classList.toggle("hidden");
-  resultsDiv.classList.toggle("show-winner");
-});
-
-// Show/Hide Rules
-btnRules.addEventListener("click", () => {
-  modalRules.classList.toggle("show-modal");
-});
-btnClose.addEventListener("click", () => {
-  modalRules.classList.toggle("show-modal");
-});
+export default App;
