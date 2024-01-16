@@ -91,6 +91,7 @@ body {
   height: 30rem;
   padding-top: 4rem;
 }
+
 .game::before {
   content: "";
   position: absolute;
@@ -287,6 +288,8 @@ body {
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
   pointer-events: none;
+  opacity: 1;
+  pointer-events: initial;
 }
 .modal__container {
   background: #fff;
@@ -311,10 +314,6 @@ body {
 .rules-img {
   padding: 2rem 4rem;
 }
-.show-modal {
-  opacity: 1;
-  pointer-events: initial;
-}
 
 /* Footer */
 .footer {
@@ -334,10 +333,10 @@ body {
 }
 
 /* Utilities */
- .preload {
+.preload {
   transition: none;
 }
 
 .hidden {
   display: none;
-} 
+}
