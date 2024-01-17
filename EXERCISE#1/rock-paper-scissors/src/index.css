@@ -336,7 +336,3 @@ body {
 .preload {
   transition: none;
 }
-
-.hidden {
-  display: none;
-}
