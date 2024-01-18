@@ -1,51 +1,40 @@
 import { useState } from "react";
-import { FaLessThan, FaGreaterThan } from "react-icons/fa6";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 function App() {
+  const [page, setPage] = useState(1);
+  const pageLinks = Array.from({ length: 12 }, (_, i) => i + 1);
+
+  const handleNext = () => {
+    if (page < 23) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+  const handlePrev = () => {
+    if (page > 23) {
+      setPage((nextPage) => nextPage + 1);
+    }
+  };
   return (
-    <div className="container">
-      <button className="previous-btn">
-        <FaLessThan />
-      </button>
-      <a href="#" className="page-link">
-        1
-      </a>
-      <a href="#" className="page-link">
-        2
-      </a>
-      <a href="#" className="page-link">
-        3{" "}
-      </a>
-      <a href="#" className="page-link">
-        4
-      </a>
-      <a href="#" className="page-link">
-        5
-      </a>
-      <a href="#" className="page-link">
-        6
-      </a>
-      <a href="#" className="page-link">
-        7
-      </a>
-      <a href="#" className="page-link">
-        .
-      </a>
-      <a href="#" className="page-link">
-        .
-      </a>
-      <a href="#" className="page-link">
-        .
-      </a>
-      <a href="#" className="page-link">
-        .
-      </a>
-      <a href="#" className="page-link">
-        23
-      </a>
-      <button className="next-btn">
-        <FaGreaterThan />
-      </button>
-    </div>
+    <>
+      <div className="pagination">
+        <button className="btn" onClick={handlePrev}>
+          <FaChevronLeft />
+        </button>
+        {pageLinks.map((link) => (
+          <a
+            href={`#page-link-${link}`}
+            id={`page-link-${link}`}
+            className="page-link"
+            key={link}
+          >
+            {link}
+          </a>
+        ))}
+        <button className="btn" onClick={handleNext}>
+          <FaChevronRight />
+        </button>
+      </div>
+    </>
   );
 }
 
