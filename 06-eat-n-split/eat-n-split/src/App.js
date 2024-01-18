@@ -37,17 +37,17 @@ export default function App() {
   function handleSelection(friend) {
     setSelectFriend((selected) => (selected?.id === friend.id ? null : friend));
   }
-   function handleSplitBill(value) {
-     setFriends((friends) =>
-       friends.map((friend) =>
-         friend.id === selectFriend.id
-           ? { ...friend, balance: friend.balance + value }
-           : friend
-       )
-     );
+  function handleSplitBill(value) {
+    setFriends((friends) =>
+      friends.map((friend) =>
+        friend.id === selectFriend.id
+          ? { ...friend, balance: friend.balance + value }
+          : friend
+      )
+    );
 
-     setSelectFriend(null);
-   }
+    setSelectFriend(null);
+  }
   return (
     <div className="app">
       <div className="sidebar">
@@ -65,6 +65,7 @@ export default function App() {
         <FormSplitBill
           selectFriend={selectFriend}
           onSplitBill={handleSplitBill}
+          key={selectFriend.id}
         />
       )}
     </div>
