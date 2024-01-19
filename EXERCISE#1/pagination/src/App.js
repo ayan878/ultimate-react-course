@@ -28,20 +28,21 @@ const MovieData = [
     Title: "The Lord of the Rings: The Fellowship of the Ring",
     Year: "2001",
     Poster:
-      "https://en.wikipedia.org/wiki/File:The_Lord_of_the_Rings,_TFOTR_(2001).jpg",
+      "https://upload.wikimedia.org/wikipedia/en/8/8a/The_Lord_of_the_Rings%2C_TFOTR_%282001%29.jpg",
   },
   {
     imdbID: "tt0088763",
     Title: "Back to the Future",
     Year: "1985",
-    Poster: "https://en.wikipedia.org/wiki/File:Back_to_the_Future.jpg",
+    Poster:
+      "https://upload.wikimedia.org/wikipedia/en/d/d2/Back_to_the_Future.jpg",
   },
   {
     imdbID: "tt0108052",
     Title: "Schindler's List",
     Year: "1993",
     Poster:
-      "https://www.imdb.com/title/tt0108052/mediaviewer/rm1610023168/?ref_=tt_ov_i",
+      "https://upload.wikimedia.org/wikipedia/en/3/38/Schindler%27s_List_movie.jpg",
   },
 ];
 
