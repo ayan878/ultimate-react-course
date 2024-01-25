@@ -258,6 +258,8 @@ function Movie({ movie, onSelectMovie }) {
 }
 function MovieDetails({ selectedId, onCloseMovie }) {
   const [movie, setMovie] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     Title: title,
     Year: year,
@@ -273,6 +275,7 @@ function MovieDetails({ selectedId, onCloseMovie }) {
   console.log(title, year);
   useEffect(() => {
     async function getMovieDetails() {
+      setIsLoading(true)
       try {
         const response = await fetch(
           `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
@@ -283,6 +286,7 @@ function MovieDetails({ selectedId, onCloseMovie }) {
           throw new Error(data.Error);
         }
         setMovie(data);
+        setIsLoading(false)
         // console.log(data)
       } catch (error) {
         console.error("Error fetching movie details:", error.message);
@@ -293,13 +297,14 @@ function MovieDetails({ selectedId, onCloseMovie }) {
   }, [selectedId]);
 
   return (
-    <div className="detail">
+    <div className="details">
+      {isLoading ? <Loader/> : <>
       <header>
         <button className="btn-back" onClick={onCloseMovie}>
           &larr;
         </button>
         <img src={poster} alt={`Poster of ${movie}movie`} />
-        <div>
+        <div className="details-overview">
           <h2>{title}</h2>
           <p>
             {released}&bull; {runtime}
@@ -307,22 +312,25 @@ function MovieDetails({ selectedId, onCloseMovie }) {
           <p>{genre}</p>
           <p>
             <span>⭐</span>
-            {imdbRating}IMDb rating
+            {imdbRating} IMDb rating
           </p>
         </div>
       </header>
-      <StarRating />
       <section>
+        <div className="rating">
+          <StarRating maxRating={10} size={24} />
+        </div>
         <p>
           <em>{plot}</em>
         </p>
         <p>Starring {actors}</p>
-        <p>Director {director}</p>
-      </section>
+        <p>Director by {director}</p>
+      </section></>}
 
       {/* {selectedId} */}
+      
     </div>
-  );
+    );
 }
 function WatchedSummary({ watched }) {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
