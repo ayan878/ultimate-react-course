@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import StarRating from "./StarRating";
 const tempMovieData = [
   {
     imdbID: "tt1375666",
@@ -297,9 +298,29 @@ function MovieDetails({ selectedId, onCloseMovie }) {
         <button className="btn-back" onClick={onCloseMovie}>
           &larr;
         </button>
-        <img src={poster} alt={`Poster of ${movie}movie`}/>
+        <img src={poster} alt={`Poster of ${movie}movie`} />
+        <div>
+          <h2>{title}</h2>
+          <p>
+            {released}&bull; {runtime}
+          </p>
+          <p>{genre}</p>
+          <p>
+            <span>⭐</span>
+            {imdbRating}IMDb rating
+          </p>
+        </div>
       </header>
-      {selectedId}
+      <StarRating />
+      <section>
+        <p>
+          <em>{plot}</em>
+        </p>
+        <p>Starring {actors}</p>
+        <p>Director {director}</p>
+      </section>
+
+      {/* {selectedId} */}
     </div>
   );
 }
