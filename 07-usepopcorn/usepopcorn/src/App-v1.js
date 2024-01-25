@@ -256,31 +256,49 @@ function Movie({ movie, onSelectMovie }) {
   );
 }
 function MovieDetails({ selectedId, onCloseMovie }) {
-useEffect(() => {
-  async function getMovieDetails() {
-    try {
-      const response = await fetch(
-        `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
-      );
-      const data = await response.json();
+  const [movie, setMovie] = useState({});
+  const {
+    Title: title,
+    Year: year,
+    Poster: poster,
+    Runtime: runtime,
+    imdbRating,
+    Plot: plot,
+    Released: released,
+    Actors: actors,
+    Director: director,
+    Genre: genre,
+  } = movie;
+  console.log(title, year);
+  useEffect(() => {
+    async function getMovieDetails() {
+      try {
+        const response = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
+        );
+        const data = await response.json();
 
-      if (data.Response === "False") {
-        throw new Error(data.Error);
+        if (data.Response === "False") {
+          throw new Error(data.Error);
+        }
+        setMovie(data);
+        // console.log(data)
+      } catch (error) {
+        console.error("Error fetching movie details:", error.message);
       }
-      console.log("Movie details:", data);
-    } catch (error) {
-      console.error("Error fetching movie details:", error.message);
     }
-  }
 
-  getMovieDetails();
-}, [selectedId]);
+    getMovieDetails();
+  }, [selectedId]);
 
   return (
     <div className="detail">
-      <button className="btn-back" onClick={onCloseMovie}>
-        &larr;
-      </button>
+      <header>
+        <button className="btn-back" onClick={onCloseMovie}>
+          &larr;
+        </button>
+        <img src={poster} alt={`Poster of ${movie}movie`}/>
+      </header>
       {selectedId}
     </div>
   );
