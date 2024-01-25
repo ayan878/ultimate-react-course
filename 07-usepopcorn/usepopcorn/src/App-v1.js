@@ -52,16 +52,21 @@ const average = (arr) =>
 const KEY = "c87bce4d";
 
 export default function App() {
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const query = "interstellar";
+  const [selectedId, setSelectedId] = useState(null);
+
+  
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         setIsLoading(true);
+        setError("");
+
         const res = await fetch(
           `http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=${query}`
         );
@@ -72,7 +77,10 @@ export default function App() {
 
         const data = await res.json();
 
-        if (data.Response === "False") {
+        // if (data.Response === "False") {
+        //   throw new Error("Movie not found");
+        // }
+        if (!data || data.Response === "False" || !data.Search) {
           throw new Error("Movie not found");
         }
 
@@ -83,14 +91,21 @@ export default function App() {
         setIsLoading(false);
       }
     };
-
+    if (query.length < 3) {
+      setMovies([]);
+      setError("");
+      return;
+    }
     fetchMovies();
   }, [query]);
 
+  function handleSelectMovie(id){
+setSelectedId(id);
+  }
   return (
     <>
       <NavBar>
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </NavBar>
 
@@ -98,13 +113,19 @@ export default function App() {
         <Box>
           {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
           {isLoading && <Loader />}
-          {!isLoading && movies.length > 0 && <MovieList movies={movies} />}
+          {!isLoading && !error && <MovieList movies={movies} onSelectMovie={handleSelectMovie} />}
           {error && <ErrorMessage message={error} />}
         </Box>
 
         <Box>
-          <WatchedSummary watched={watched} />
-          <WatchedMoviesList watched={watched} />
+          {selectedId ? (
+            <MovieDetails selectedId={selectedId} onSelectMovie={handleSelectMovie} />
+          ) : (
+            <>
+              <WatchedSummary watched={watched} />
+              <WatchedMoviesList watched={watched} />
+            </>
+          )}
         </Box>
       </Main>
     </>
@@ -140,9 +161,7 @@ function Logo() {
   );
 }
 
-function Search() {
-  const [query, setQuery] = useState("");
-
+function Search({ query, setQuery }) {
   return (
     <input
       className="search"
@@ -205,19 +224,19 @@ function WatchedBox() {
 }
 */
 
-function MovieList({ movies }) {
+function MovieList({ movies,onSelectMovie }) {
   return (
-    <ul className="list">
+    <ul className="list list-movies">
       {movies?.map((movie) => (
-        <Movie movie={movie} key={movie.imdbID} />
+        <Movie movie={movie} key={movie.imdbID} onSelectMovie={onSelectMovie} />
       ))}
     </ul>
   );
 }
 
-function Movie({ movie }) {
+function Movie({ movie,onSelectMovie }) {
   return (
-    <li>
+    <li onClick={()=>onSelectMovie(movie.imdbID)}>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
       <h3>{movie.Title}</h3>
       <div>
@@ -229,7 +248,9 @@ function Movie({ movie }) {
     </li>
   );
 }
-
+function MovieDetails({selectedId}){
+  return <div className="detail">{selectedId}</div>
+}
 function WatchedSummary({ watched }) {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
