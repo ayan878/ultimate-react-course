@@ -104,6 +104,9 @@ export default function App() {
   function handleCloseMovie(id) {
     setSelectedId(null);
   }
+  function handleAddWatch() {
+    setWatched((watched) => [...watched, movies]);
+  }
   return (
     <>
       <NavBar>
@@ -127,6 +130,7 @@ export default function App() {
               selectedId={selectedId}
               onSelectMovie={handleSelectMovie}
               onCloseMovie={handleCloseMovie}
+              onAddWatched={handleAddWatch}
             />
           ) : (
             <>
@@ -256,7 +260,7 @@ function Movie({ movie, onSelectMovie }) {
     </li>
   );
 }
-function MovieDetails({ selectedId, onCloseMovie }) {
+function MovieDetails({ selectedId, onCloseMovie, onAddWatched }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -272,10 +276,21 @@ function MovieDetails({ selectedId, onCloseMovie }) {
     Director: director,
     Genre: genre,
   } = movie;
-  console.log(title, year);
+  // console.log(title, year);
+  function handleAdd() {
+    const newWatchMovies = {
+      imdbID: selectedId,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split(" ").at(0)),
+    };
+    onAddWatched(newWatchMovies);
+  }
   useEffect(() => {
     async function getMovieDetails() {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
         const response = await fetch(
           `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
@@ -286,7 +301,7 @@ function MovieDetails({ selectedId, onCloseMovie }) {
           throw new Error(data.Error);
         }
         setMovie(data);
-        setIsLoading(false)
+        setIsLoading(false);
         // console.log(data)
       } catch (error) {
         console.error("Error fetching movie details:", error.message);
@@ -298,39 +313,46 @@ function MovieDetails({ selectedId, onCloseMovie }) {
 
   return (
     <div className="details">
-      {isLoading ? <Loader/> : <>
-      <header>
-        <button className="btn-back" onClick={onCloseMovie}>
-          &larr;
-        </button>
-        <img src={poster} alt={`Poster of ${movie}movie`} />
-        <div className="details-overview">
-          <h2>{title}</h2>
-          <p>
-            {released}&bull; {runtime}
-          </p>
-          <p>{genre}</p>
-          <p>
-            <span>⭐</span>
-            {imdbRating} IMDb rating
-          </p>
-        </div>
-      </header>
-      <section>
-        <div className="rating">
-          <StarRating maxRating={10} size={24} />
-        </div>
-        <p>
-          <em>{plot}</em>
-        </p>
-        <p>Starring {actors}</p>
-        <p>Director by {director}</p>
-      </section></>}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <header>
+            <button className="btn-back" onClick={onCloseMovie}>
+              &larr;
+            </button>
+            <img src={poster} alt={`Poster of ${movie}movie`} />
+            <div className="details-overview">
+              <h2>{title}</h2>
+              <p>
+                {released}&bull; {runtime}
+              </p>
+              <p>{genre}</p>
+              <p>
+                <span>⭐</span>
+                {imdbRating} IMDb rating
+              </p>
+            </div>
+          </header>
+          <section>
+            <div className="rating">
+              <StarRating maxRating={10} size={24} />
+              <button className="btn-add" onClick={handleAdd}>
+                + Add to list
+              </button>
+            </div>
+            <p>
+              <em>{plot}</em>
+            </p>
+            <p>Starring {actors}</p>
+            <p>Director by {director}</p>
+          </section>
+        </>
+      )}
 
       {/* {selectedId} */}
-      
     </div>
-    );
+  );
 }
 function WatchedSummary({ watched }) {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
@@ -375,8 +397,8 @@ function WatchedMoviesList({ watched }) {
 function WatchedMovie({ movie }) {
   return (
     <li>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <h3>{movie.Title}</h3>
+      <img src={movie.poster} alt={`${movie.title} poster`} />
+      <h3>{movie.title}</h3>
       <div>
         <p>
           <span>⭐️</span>
