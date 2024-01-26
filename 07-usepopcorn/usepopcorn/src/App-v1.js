@@ -113,6 +113,7 @@ export default function App() {
       setError("");
       return;
     }
+    handleCloseMovie();
     fetchMovies();
     return () => {
       controller.abort();
@@ -313,22 +314,22 @@ function MovieDetails({ selectedId, onCloseMovie, setWatched, watched }) {
     // onAddWatched(newWatchedMovie);
     onCloseMovie();
   }
-   useEffect(
-     function () {
-       function callback(e) {
-         if (e.code === "Escape") {
-           onCloseMovie();
-         }
-       }
+  useEffect(
+    function () {
+      function callback(e) {
+        if (e.code === "Escape") {
+          onCloseMovie();
+        }
+      }
 
-       document.addEventListener("keydown", callback);
+      document.addEventListener("keydown", callback);
 
-       return function () {
-         document.removeEventListener("keydown", callback);
-       };
-     },
-     [onCloseMovie]
-   );
+      return function () {
+        document.removeEventListener("keydown", callback);
+      };
+    },
+    [onCloseMovie]
+  );
 
   useEffect(() => {
     async function getMovieDetails() {
