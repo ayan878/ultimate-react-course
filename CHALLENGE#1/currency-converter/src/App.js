@@ -1,25 +1,41 @@
 // `https://api.frankfurter.app/latest?amount=100&from=EUR&to=USD`
-
 import { useEffect, useState } from "react";
 
 function App() {
   const [amount, setAmount] = useState(1);
   const [fromCur, setFromCur] = useState("EUR");
   const [toCur, setToCur] = useState("USD");
-  const [convert, setConvert] = useState(null);
-
+  const [convertedResult, setConvertedResult] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    async function convert() {
-     const res = await fetch(
-       `https://api.frankfurter.app/latest?amount=${amount}&from=${fromCur}&to=${toCur}`
-     );
-      const data = await res.json();
-      console.log(data);
-    }
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `https://api.frankfurter.app/latest?amount=${amount}&from=${fromCur}&to=${toCur}`
+        );
 
-    convert();
-  }, [amount ,fromCur, toCur]);
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await res.json();
+        setConvertedResult(data.rates[toCur]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    // If fromCur is equal to toCur, set the conversion result directly
+    if (fromCur === toCur) {
+      setConvertedResult(amount);
+    } else {
+      fetchData();
+    }
+  }, [amount, fromCur, toCur]);
 
   return (
     <div>
@@ -27,12 +43,14 @@ function App() {
         type="text"
         value={amount}
         onChange={(e) => setAmount(Number(e.target.value))}
+        disabled={isLoading}
       />
       <select
         value={fromCur}
         onChange={(e) => {
           setFromCur(e.target.value);
         }}
+        disabled={isLoading}
       >
         <option value="USD">USD</option>
         <option value="EUR">EUR</option>
@@ -44,13 +62,14 @@ function App() {
         onChange={(e) => {
           setToCur(e.target.value);
         }}
+        disabled={isLoading}
       >
         <option value="USD">USD</option>
         <option value="EUR">EUR</option>
         <option value="CAD">CAD</option>
         <option value="INR">INR</option>
       </select>
-      <p>{convert}</p>
+      <p>{convertedResult}</p>
     </div>
   );
 }
