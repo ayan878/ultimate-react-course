@@ -202,8 +202,16 @@ function Search({ query, setQuery }) {
   // using ref we can achieve abstraction
   const searchInputRef = useRef(null);
   useEffect(() => {
-    searchInputRef.current.focus();
-  }, [query]);
+    function callback(e) {
+      if (document.activeElement === searchInputRef.current) return;
+      if (e.code === "Enter") {
+        searchInputRef.current.focus();
+        setQuery("");
+      }
+    }
+    document.addEventListener("keydown", callback);
+    return () => document.addEventListener("keydown", callback);
+  }, [setQuery]);
 
   return (
     <input
