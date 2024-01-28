@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 const tempMovieData = [
   {
@@ -192,11 +192,19 @@ function Logo() {
 }
 
 function Search({ query, setQuery }) {
-  useEffect(()=>{
-    const el =document.querySelector('.search');
-    el.focus();
-  })
-  
+  // The use of document.querySelector to directly interact with the DOM can be considered a violation of the React abstraction
+
+  // useEffect(() => {
+  //   const el = document.querySelector(".search");
+  //   el.focus();
+  // }, [query]);
+
+  // using ref we can achieve abstraction
+  const searchInputRef = useRef(null);
+  useEffect(() => {
+    searchInputRef.current.focus();
+  }, [query]);
+
   return (
     <input
       className="search"
@@ -204,6 +212,7 @@ function Search({ query, setQuery }) {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
+      ref={searchInputRef}
     />
   );
 }
