@@ -19,6 +19,7 @@ function reducer(state, action) {
       throw new Error("Unknown action");
   }
 }
+
 function DateCounter() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { count, step } = state;
