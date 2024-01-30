@@ -3,6 +3,7 @@ import Header from "./Header.js";
 import Main from "./Main.js";
 import Loader from "./Loader.js";
 import Error from "./Error.js";
+import StartScreen from "./StartScreen.js";
 
 function initialState() {
   return {
@@ -27,18 +28,17 @@ function reducer(state, action) {
 function App() {
   const [{ questions, status }, dispatch] = useReducer(reducer, initialState()); // Initialize with initialState instead of 0
 
- useEffect(() => {
-   fetch("http://localhost:8000/questions")
-     .then((res) => res.json())
-     .then((data) => {
-       dispatch({ type: "dataReceived", payload: data });
-     })
-     .catch((error) => {
-       console.error("Error fetching data:", error);
-       dispatch({ type: "dataFailed" });
-     });
- }, []);
-
+  useEffect(() => {
+    fetch("http://localhost:8000/questions")
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch({ type: "dataReceived", payload: data });
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        dispatch({ type: "dataFailed" });
+      });
+  }, []);
 
   return (
     <div className="app">
@@ -46,6 +46,7 @@ function App() {
       <Main>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
+        {status === "ready" && <StartScreen total={questions.length} />}
       </Main>
     </div>
   );
