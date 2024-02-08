@@ -62,8 +62,8 @@ function reducer(state, action) {
       return {
         ...state,
         secondRemaining: state.secondRemaining - 1,
-        status: state.secondRemaining === 0 ? "finished" : state.status, // Fix typo here
-      };
+        status: state.secondRemaining === 0 ? "finished" : state.status, 
+            };
 
     default:
       throw new Error("Action unknown");
