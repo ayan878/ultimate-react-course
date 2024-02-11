@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { faker } from "@faker-js/faker";
 import { PostProvider, usePosts } from "./PostContext";
 import Test from "./Test";
+
 function createRandomPost() {
   return {
     title: `${faker.hacker.adjective()} ${faker.hacker.noun()}`,
@@ -12,19 +13,16 @@ function createRandomPost() {
 function App() {
   const [isFakeDark, setIsFakeDark] = useState(false);
 
-  // Whenever `isFakeDark` changes, we toggle the `fake-dark-mode` class on the HTML element (see in "Elements" dev tool).
-  useEffect(
-    function () {
-      document.documentElement.classList.toggle("fake-dark-mode");
-    },
-    [isFakeDark]
-  );
+  // Whenever `isFakeDark` changes, we toggle the `fake-dark-mode` class on the HTML element
+  useEffect(() => {
+    document.documentElement.classList.toggle("fake-dark-mode", isFakeDark);
+  }, [isFakeDark]);
 
   return (
     <PostProvider>
       <section>
         <button
-          onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
+          onClick={() => setIsFakeDark((prevIsFakeDark) => !prevIsFakeDark)}
           className="btn-fake-dark-mode"
         >
           {isFakeDark ? "☀️" : "🌙"}
@@ -40,7 +38,7 @@ function App() {
 }
 
 function Header() {
-  // STEP 3: CONSUMING THE CONTEXT VALUE
+  // Consuming the context value
   const { onClearPosts } = usePosts();
 
   return (
@@ -73,19 +71,22 @@ function Results() {
   return <p>🚀 {posts.length} atomic posts found</p>;
 }
 
-function Main() {
+// Memoizing the Main component to prevent unnecessary re-renders
+const Main = memo(function Main() {
   return (
     <main>
       <FormAddPost />
       <Posts />
     </main>
   );
-}
+});
 
 function Posts() {
+  const { posts } = usePosts();
   return (
     <section>
-      <List />
+      <List posts={posts} />
+      <Test />
     </section>
   );
 }
@@ -120,37 +121,31 @@ function FormAddPost() {
   );
 }
 
-function List() {
-  const { posts } = usePosts();
+function List({ posts }) {
   return (
-    <>
-      <ul>
-        {posts.map((post, i) => (
-          <li key={i}>
-            <h3>{post.title}</h3>
-            <p>{post.body}</p>
-          </li>
-        ))}
-      </ul>
-      <Test/>
-    </>
+    <ul>
+      {posts.map((post, i) => (
+        <li key={i}>
+          <h3>{post.title}</h3>
+          <p>{post.body}</p>
+        </li>
+      ))}
+    </ul>
   );
 }
 
 function Archive() {
   const { onAddPost } = usePosts();
-  // Here we don't need the setter function. We're only using state to store these posts because the callback function passed into useState (which generates the posts) is only called once, on the initial render. So we use this trick as an optimization technique, because if we just used a regular variable, these posts would be re-created on every render. We could also move the posts outside the components, but I wanted to show you this trick 😉
-  const [posts] = useState(() =>
-    // 💥 WARNING: This might make your computer slow! Try a smaller `length` first
-    Array.from({ length: 10000 }, () => createRandomPost())
-  );
-
+  // Generating random posts for the archive
+  const posts = Array.from({ length: 10000 }, createRandomPost);
   const [showArchive, setShowArchive] = useState(false);
 
   return (
     <aside>
       <h2>Post archive</h2>
-      <button onClick={() => setShowArchive((s) => !s)}>
+      <button
+        onClick={() => setShowArchive((prevShowArchive) => !prevShowArchive)}
+      >
         {showArchive ? "Hide archive posts" : "Show archive posts"}
       </button>
 

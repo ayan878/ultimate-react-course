@@ -16,17 +16,22 @@ function App() {
   const [isFakeDark, setIsFakeDark] = useState(false);
 
   // Derived state. These are the posts that will actually be displayed
-  const searchedPosts =
-    searchQuery.length > 0
-      ? posts.filter((post) =>
-          `${post.title} ${post.body}`
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase())
-        )
-      : posts;
-  const handleAddPost = useMemo((post) => {
-    setPosts((posts) => [post, ...posts]);
-  }, []);
+  const searchedPosts = useMemo(
+    () =>
+      searchQuery.length > 0
+        ? posts.filter((post) =>
+            `${post.title} ${post.body}`
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase())
+          )
+        : posts,
+    [posts, searchQuery]
+  );
+const handleAddPost = useMemo(() =>
+    (post) => {
+      setPosts((posts) => [post, ...posts]);
+    }
+  , []);
 
   // function handleAddPost(post) {
   //   setPosts((posts) => [post, ...posts]);
