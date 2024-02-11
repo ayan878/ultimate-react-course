@@ -40,9 +40,12 @@ function App() {
     },
     [isFakeDark]
   );
-const archiveOption= useMemo(useCallback()=>{
-  
-}){
+const archiveOption= useMemo(()=>{
+  return {
+  show:false,
+  title:"Post archieve in addtion to main posts",
+}
+})
 
   return (
     <section>
