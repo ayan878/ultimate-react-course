@@ -31,7 +31,7 @@ function Calculator({ workouts, allowSound }) {
   useEffect(() => {
     setDuration((number * sets * speed) / 60 + (sets - 1) * durationBreak);
   }, [number, sets, speed, durationBreak]);
-  // const duration = (number * sets * speed) / 60 + (sets - 1) * durationBreak;
+ 
 
   useEffect(() => {
     document.title = `Your ${number} -exercise workout`;
