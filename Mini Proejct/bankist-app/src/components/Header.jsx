@@ -9,6 +9,9 @@ function Header() {
   const handleLogin = () => {
     login();
   };
+   const handleLogout = () => {
+     logout();
+   };
 
   return (
     <nav>
@@ -31,7 +34,7 @@ function Header() {
           onChange={e => setPin(e.target.value)}
         />
         {isAuthenticated ? (
-          <button onClick={logout} className="login__btn">
+          <button onClick={handleLogout} className="login__btn">
             Logout
           </button>
         ) : (
