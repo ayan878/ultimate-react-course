@@ -23,6 +23,12 @@
       "movements": [430, 1000, 700, 50, 90],
       "interestRate": 1,
       "pin": 4444
+    },
+     {
+      "owner": "Ayan",
+      "movements": [530, 1000, 600, 50, 80],
+      "interestRate": 1,
+      "pin": 5555
     }
   ]
 }
