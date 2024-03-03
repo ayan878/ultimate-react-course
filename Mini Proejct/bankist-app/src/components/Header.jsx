@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/logo.png';
 
 function Header() {
-  const { isAuthenticated, username, pin, login, logout, setPin, setUsername } =
-    useAuth();
+  const { isAuthenticated, login, logout } = useAuth();
+  const [username, setUsername] = useState('');
+  const [pin, setPin] = useState('');
 
+  console.log(isAuthenticated);
   const handleLogin = () => {
-    login();
+    login(username, pin);
+    setUsername('');
+    setPin('');
   };
-   const handleLogout = () => {
-     logout();
-   };
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <nav>
-      <p className="welcome">Log in to get started</p>
+      <p className="welcome">
+        {isAuthenticated ? `Welcome, ${username}!` : 'Log in to get started'}
+      </p>
       <img src={logo} alt="Logo" className="logo" />
       <form className="login">
         <input
@@ -33,11 +40,12 @@ function Header() {
           value={pin}
           onChange={e => setPin(e.target.value)}
         />
-        {isAuthenticated ? (
+        {isAuthenticated && (
           <button onClick={handleLogout} className="login__btn">
             Logout
           </button>
-        ) : (
+        )}
+        {!isAuthenticated && (
           <button onClick={handleLogin} className="login__btn">
             Login
           </button>
