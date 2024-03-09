@@ -1,7 +1,7 @@
-import { createStore } from "redux";
+import { combineReducers, createStore } from "redux";
 
 // Define action creators
-function deposite(amount) {
+function deposit(amount) {
   return { type: "account/deposit", payload: amount };
 }
 
@@ -17,7 +17,7 @@ function payLoan(amount) {
   return { type: "account/payLoan", payload: amount };
 }
 
-// Reducer function
+// Reducer functions
 const initialStateAccount = {
   balance: 0,
   loan: 0,
@@ -26,11 +26,11 @@ const initialStateAccount = {
 
 const initialStateCustomer = {
   fullName: "",
-  natioanlID: "",
+  nationalID: "",
   createdAt: "",
 };
 
-function reducer(state = initialStateAccount, action) {
+function accountReducer(state = initialStateAccount, action) {
   switch (action.type) {
     case "account/deposit":
       return { ...state, balance: state.balance + action.payload };
@@ -55,18 +55,54 @@ function reducer(state = initialStateAccount, action) {
   }
 }
 
+function customerReducer(state = initialStateCustomer, action) {
+  switch (action.type) {
+    case "customer/createCustomer":
+      return {
+        ...state,
+        fullName: action.payload.fullName,
+        nationalID: action.payload.nationalID,
+        createdAt: action.payload.createdAt,
+      };
+    case "customer/updateName":
+      return {
+        ...state,
+        fullName: action.payload,
+      };
+    default:
+      return state;
+  }
+}
+
+// Combine reducers
+const rootReducer = combineReducers({
+  account: accountReducer,
+  customer: customerReducer,
+});
+
 // Create Redux store
-const store = createStore(reducer);
+const store = createStore(rootReducer);
 
 // Dispatch actions using action creators
-store.dispatch(deposite(500));
-console.log(store.getState().balance);
+store.dispatch(deposit(500));
+console.log(store.getState().account.balance);
 store.dispatch(withdraw(200));
-console.log(store.getState().balance);
+console.log(store.getState().account.balance);
 store.dispatch(requestLoan(1000, "Buy a car"));
+console.log(store.getState().account.balance); // Output: 1300
 
-console.log(store.getState().balance); // Output: 1300
-
-function createCustomer(fullName,natioanlID){
-  return{type:"customer/createdCustomer"}
+function createCustomer(fullName, nationalID) {
+  return {
+    type: "customer/createCustomer",
+    payload: { fullName, nationalID, createdAt: new Date().toISOString() },
+  };
 }
+
+function updateName(fullName) {
+  return { type: "customer/updateName", payload: fullName };
+}
+
+store.dispatch(createCustomer("John Doe", "123456789"));
+console.log(store.getState().customer);
+store.dispatch(updateName("Jane Doe"));
+console.log(store.getState().customer);
