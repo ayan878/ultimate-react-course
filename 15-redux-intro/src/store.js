@@ -18,13 +18,19 @@ function payLoan(amount) {
 }
 
 // Reducer function
-const initialState = {
+const initialStateAccount = {
   balance: 0,
   loan: 0,
   loanPurpose: "",
 };
 
-function reducer(state = initialState, action) {
+const initialStateCustomer = {
+  fullName: "",
+  natioanlID: "",
+  createdAt: "",
+};
+
+function reducer(state = initialStateAccount, action) {
   switch (action.type) {
     case "account/deposit":
       return { ...state, balance: state.balance + action.payload };
@@ -54,7 +60,13 @@ const store = createStore(reducer);
 
 // Dispatch actions using action creators
 store.dispatch(deposite(500));
+console.log(store.getState().balance);
 store.dispatch(withdraw(200));
+console.log(store.getState().balance);
 store.dispatch(requestLoan(1000, "Buy a car"));
 
 console.log(store.getState().balance); // Output: 1300
+
+function createCustomer(fullName,natioanlID){
+  return{type:"customer/createdCustomer"}
+}
