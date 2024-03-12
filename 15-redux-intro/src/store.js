@@ -11,3 +11,4 @@ const rootReducer = combineReducers({
 // Create Redux store
 const store = createStore(rootReducer);
 
+export default store
