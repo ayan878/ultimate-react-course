@@ -1,4 +1,5 @@
-import { combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import thunk from "react-redux";
 import accountReducer from "./features/accounts/accountSlice";
 import customerReducer from "./features/customers/customerSlice";
 
@@ -9,6 +10,11 @@ const rootReducer = combineReducers({
 });
 
 // Create Redux store
-const store = createStore(rootReducer);
+const store = createStore(rootReducer,applyMiddleware(thunk));
 
-export default store
+export default store;
+
+// In order to use middleware (Thunk) we have to follow Three Step 
+// Step:1 install middleware package 
+// step :2 we apply meddleware to store
+// step :3 We use middleware in action creator function
