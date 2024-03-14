@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deposit, payLoan, requestLoan, withdraw } from "./accountSlice";
+import { depositAsync, payLoan, requestLoan, withdraw } from "./accountSlice";
 
 function AccountOperations() {
   const [depositAmount, setDepositAmount] = useState("");
@@ -12,18 +12,17 @@ function AccountOperations() {
   const dispatch = useDispatch();
   const {
     loan: currentLoan,
-    loanPurpose: currentLoanPerpose,
+    loanPurpose: currentLoanPurpose,
     balance,
     isLoading,
   } = useSelector((store) => store.account);
-  console.log(balance);
+
   function handleDeposit() {
     if (!depositAmount) return;
-    dispatch(deposit(depositAmount, currency));
+    dispatch(depositAsync(parseFloat(depositAmount), currency));
     setDepositAmount("");
-    setCurrency("");
+    setCurrency("USD"); // Reset currency to default after deposit
   }
-  console.log(depositAmount);
 
   function handleWithdrawal() {
     if (!withdrawalAmount) return;
@@ -35,6 +34,7 @@ function AccountOperations() {
     if (!loanAmount || !loanPurpose) return;
     dispatch(requestLoan(loanAmount, loanPurpose));
     setLoanAmount("");
+    setLoanPurpose("");
   }
 
   function handlePayLoan() {
@@ -50,7 +50,7 @@ function AccountOperations() {
           <input
             type="number"
             value={depositAmount}
-            onChange={(e) => setDepositAmount(+e.target.value)}
+            onChange={(e) => setDepositAmount(e.target.value)}
           />
           <select
             value={currency}
@@ -60,8 +60,9 @@ function AccountOperations() {
             <option value="EUR">Euro</option>
             <option value="GBP">British Pound</option>
           </select>
-
-          <button onClick={handleDeposit} disabled={isLoading}>{isLoading ? 'Converting...' :`Diposit ${depositAmount}`} </button>
+          <button onClick={handleDeposit} disabled={isLoading}>
+            {isLoading ? "Converting..." : "Deposit"}
+          </button>
         </div>
 
         <div>
@@ -69,11 +70,9 @@ function AccountOperations() {
           <input
             type="number"
             value={withdrawalAmount}
-            onChange={(e) => setWithdrawalAmount(+e.target.value)}
+            onChange={(e) => setWithdrawalAmount(e.target.value)}
           />
-          <button onClick={handleWithdrawal}>
-            Withdraw {withdrawalAmount}
-          </button>
+          <button onClick={handleWithdrawal}>Withdraw</button>
         </div>
 
         <div>
@@ -81,7 +80,7 @@ function AccountOperations() {
           <input
             type="number"
             value={loanAmount}
-            onChange={(e) => setLoanAmount(parseFloat(+e.target.value))}
+            onChange={(e) => setLoanAmount(e.target.value)}
             placeholder="Loan amount"
           />
           <input
@@ -95,7 +94,7 @@ function AccountOperations() {
         {currentLoan > 0 && (
           <div>
             <span>
-              Pay back ${currentLoan} ({currentLoanPerpose})
+              Pay back ${currentLoan} ({currentLoanPurpose})
             </span>
             <button onClick={handlePayLoan}>Pay loan</button>
           </div>
