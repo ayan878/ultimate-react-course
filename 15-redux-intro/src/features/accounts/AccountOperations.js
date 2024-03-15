@@ -14,6 +14,7 @@ function AccountOperations() {
     loan: currentLoan,
     loanPurpose: currentLoanPurpose,
     balance,
+    fullName,
     isLoading,
   } = useSelector((store) => store.account);
 
@@ -21,7 +22,7 @@ function AccountOperations() {
     if (!depositAmount) return;
     dispatch(depositAsync(parseFloat(depositAmount), currency));
     setDepositAmount("");
-    setCurrency("USD"); // Reset currency to default after deposit
+    setCurrency("USD"); 
   }
 
   function handleWithdrawal() {
