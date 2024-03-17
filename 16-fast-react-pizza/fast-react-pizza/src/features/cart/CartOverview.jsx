@@ -9,5 +9,4 @@ function CartOverview() {
     </div>
   );
 }
-
 export default CartOverview;
