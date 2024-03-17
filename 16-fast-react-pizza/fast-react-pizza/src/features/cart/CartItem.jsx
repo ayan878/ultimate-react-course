@@ -12,5 +12,4 @@ function CartItem({ item }) {
     </li>
   );
 }
-
 export default CartItem;
