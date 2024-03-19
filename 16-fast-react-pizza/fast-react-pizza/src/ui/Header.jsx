@@ -2,9 +2,10 @@ import { Link } from "react-router-dom";
 
 function Header() {
   return (
-    <Header>
+    <header>
       <Link to="/">Fast React Pizza Co.</Link>
-    </Header>
+      <p>Ayan Raza</p>
+    </header>
   );
 }
 
