@@ -32,7 +32,7 @@ const router = createBrowserRouter([
         element: <CreateOrder />,
       },
       {
-        path: "/order/orderId",
+        path: "/order/:orderId",
         element: <Order />,
       },
     ],
